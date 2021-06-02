@@ -34,7 +34,7 @@
 
 
 typedef struct nodoGenerico{
-  int dato;
+  char* dato;
   struct nodoGenerico* siguiente;
 }nodo;
 
@@ -60,7 +60,7 @@ void recorrerLista(TDAlista* lista){
   if (!esListaVacia(lista)){
     nodo* auxiliar=lista->inicio;
     while (auxiliar!=NULL){
-      printf("%d ",auxiliar->dato);
+      printf("%s  ",auxiliar->dato);
       auxiliar=auxiliar->siguiente;
     }
     printf("\n");
@@ -69,14 +69,14 @@ void recorrerLista(TDAlista* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoInicio(TDAlista* lista, int valor){
+void insertarNodoInicio(TDAlista* lista, char* valor){
   nodo* nuevo=(nodo*)malloc(sizeof(nodo));
   nuevo->dato=valor;
   nuevo->siguiente = lista->inicio;
   lista->inicio=nuevo;
 }
 
-void insertarNodoFinal(TDAlista* lista, int valor){
+void insertarNodoFinal(TDAlista* lista, char* valor){
     nodo* nuevo=(nodo*)malloc(sizeof(nodo));
     nodo* final = lista->inicio;
     nuevo->dato=valor;
@@ -96,7 +96,7 @@ void insertarNodoFinal(TDAlista* lista, int valor){
 
 }
 
-void leerArchivo(char* nombre, char*** data){
+void leerArchivo(char* nombre, TDAlista* informacionPersona){
     FILE* arch;
     arch = fopen(nombre,"r");
     if(arch == NULL){
@@ -105,20 +105,32 @@ void leerArchivo(char* nombre, char*** data){
     }
     int i = 0;
     while(feof(arch) == 0){
+        
         char* aux = (char*)malloc(100*sizeof(char));
         char* aux2 = (char*)malloc(100*sizeof(char));
         char* aux3 = (char*)malloc(100*sizeof(char));
-        fscanf(arch,"%s %s %s",aux,aux2,aux3);
-        data[i][0] = aux;
-        data[i][1] = aux2;
-        data[i][2] = aux3;
+        char* aux4 = (char*)malloc(100*sizeof(char));
+        char* aux5 = (char*)malloc(100*sizeof(char));
+        char* aux6 = (char*)malloc(100*sizeof(char));
+
+        fscanf(arch,"%s %s %s %s %s %s",aux,aux2,aux3,aux4,aux5,aux6);
+        printf("Lei uwu\n");
+        
+        insertarNodoFinal(informacionPersona, aux);
+        insertarNodoFinal(informacionPersona, aux2);
+        insertarNodoFinal(informacionPersona, aux3);
+        insertarNodoFinal(informacionPersona, aux4);
+        insertarNodoFinal(informacionPersona, aux5);
+        insertarNodoFinal(informacionPersona, aux6);
+        printf("Inserte\n");
+        recorrerLista(informacionPersona);
         i++;
     }
     fclose(arch);
 }
 
 int main(){
-
-
+    TDAlista * informacionPersona = crearListaVacia();
+    leerArchivo("vacunados1D.in",informacionPersona);
     return 0;
 }
