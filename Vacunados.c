@@ -40,6 +40,10 @@ typedef struct nodoGenerico{
 
 typedef struct listaGenerica{
   nodo* inicio;
+  vacunados1dosis* inicio1D;
+  vacunados2dosis* inicio2D;
+  vacunas* inicioVacunas;
+  
 }TDAlista;
 
 typedef struct vacunados1dosis{
@@ -49,6 +53,7 @@ typedef struct vacunados1dosis{
   char* edad;
   char* fecha1dosis;
   char* idVacuna;
+  struct vacunados1dosis* siguiente;
 }vacunados1dosis;
 
 typedef struct vacunados2dosis{
@@ -58,8 +63,16 @@ typedef struct vacunados2dosis{
   char* edad;
   char* fecha2dosis;
   char* idVacuna;
+  struct vacunados2dosis* siguiente;
 }vacunados2dosis;
 
+typedef struct vacunas{
+  char* numero;
+  char* nombre;
+  char* fabricante;
+  char* periodo;
+  struct vacunas* siguiente;
+}vacunas;
 
 
 
@@ -177,14 +190,45 @@ void lecturaVacunados2D(char* nombre,vacunados2dosis* vacunados){
 
   fclose(arch);
 }
+
+void lecturaVacunas(char* nombre,vacunas* vacunas){
+  FILE* arch;
+  arch = fopen(nombre,"r");
+  if(arch == NULL){
+      printf("No existe el archivo\n");
+      exit(1);
+  }
+  int cantidadVacunas;
+  fscanf(arch,"%d",&cantidadVacunas);
+  int i =0;
+  while(feof(arch) == 0){
+    char* aux = (char*)malloc(100*sizeof(char));
+    char* aux2 = (char*)malloc(100*sizeof(char));
+    char* aux3 = (char*)malloc(100*sizeof(char));
+    char* aux4 = (char*)malloc(100*sizeof(char));
+
+    fscanf(arch,"%s %s %s %s",aux,aux2,aux3,aux4);
+    vacunas[i].numero = aux;
+    vacunas[i].nombre = aux2;
+    vacunas[i].fabricante = aux3;
+    vacunas[i].periodo = aux4;
+    i++;
+  }
+
+  fclose(arch);
+}
+
+
 int main(){
 
   vacunados1dosis* vacunados1D =(vacunados1dosis*)malloc(sizeof(vacunados1dosis)*23);
   lecturaVacunados1D("vacunados1D.in",vacunados1D);
 
-  vacunados2dosis* vacunados2D =(vacunados2dosis*)malloc(sizeof(vacunados1dosis)*8);
+  vacunados2dosis* vacunados2D =(vacunados2dosis*)malloc(sizeof(vacunados2dosis)*8);
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
+  vacunas* vacunasE =(vacunas*)malloc(sizeof(vacunas)*3);
+  lecturaVacunas("vacunas.in",vacunados2D);
 
   /*
   for(int i=0;i< 20;i++){
