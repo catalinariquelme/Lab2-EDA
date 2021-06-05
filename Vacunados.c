@@ -1,60 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "nodos.h"
-
-
-nodo1D* crearListaVacia(){
-  nodo1D* lista=(nodo1D*)malloc(sizeof(nodo1D));
-  lista=NULL;
-  return lista;
-}
-
-int esListaVacia(nodo1D* lista){
-  if (lista == NULL)
-    return 1;
-  else
-    return 0;
-}
-
-void recorrerLista(nodo1D* lista){
-  if (!esListaVacia(lista)){
-    nodo1D* auxiliar=lista;
-    while (auxiliar!=NULL){
-      printf("%s  ",auxiliar->vacunados1D);
-      auxiliar=auxiliar->siguiente;
-    }
-    printf("\n");
-  }
-  else
-    printf("La lista está vacia\n");
-}
-
-void insertarNodoInicio(nodo1D* lista, vacunados1dosis valor){
-  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
-  nuevo->vacunados1D=valor;
-  nuevo->siguiente = lista;
-  lista=nuevo;
-}
-
-void insertarNodoFinal(nodo1D* lista, vacunados1dosis valor){
-  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
-  nodo1D* final = lista;
-  nuevo->vacunados1D=valor;
-  nuevo->siguiente = NULL;
-  if (esListaVacia(lista)){
-    lista = nuevo;
-    
-  }
-  else{
-    while(final->siguiente != NULL){
-        final = final->siguiente;
-    }
-    
-    
-    final->siguiente = nuevo;
-  }
-
-}
+#include "vacunados1D.h"
+#include "vacunados2D.h"
+#include "vacunas.h"
 
 void lecturaVacunados1D(char* nombre,vacunados1dosis* vacunados){
   FILE* arch;
