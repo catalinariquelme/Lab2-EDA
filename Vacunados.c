@@ -1,80 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "nodos.h"
+
 
 /*
-
-////// ENTRADAS ////// 
-
--Vacunas
-[n]
-1)Número
-2)Nombre
-3)Fabricante
-4)Periodo (semanas)
-
--Vacunados1D (1 dosis)
-[n]
-1)Rut
-2)Nombre
-3)Apellido
-4)Edad
-5)Fecha 1 dosis
-6)ID vacuna
-
--Vacunados2D (2 dosis)
-[n]
-1)Rut
-2)Nombre
-3)Apellido
-4)Edad
-5)Fecha 2 dosis
-6)ID vacuna
-
-*/
-
-
-typedef struct nodoGenerico{
-  char* dato;
-  struct nodoGenerico* siguiente;
-}nodo;
-
-typedef struct listaGenerica{
-  nodo* inicio;
-  vacunados1dosis* inicio1D;
-  vacunados2dosis* inicio2D;
-  vacunas* inicioVacunas;
-  
-}TDAlista;
-
-typedef struct vacunados1dosis{
-  char* rut;
-  char* nombre;
-  char* apellido;
-  char* edad;
-  char* fecha1dosis;
-  char* idVacuna;
-  struct vacunados1dosis* siguiente;
-}vacunados1dosis;
-
-typedef struct vacunados2dosis{
-  char* rut;
-  char* nombre;
-  char* apellido;
-  char* edad;
-  char* fecha2dosis;
-  char* idVacuna;
-  struct vacunados2dosis* siguiente;
-}vacunados2dosis;
-
-typedef struct vacunas{
-  char* numero;
-  char* nombre;
-  char* fabricante;
-  char* periodo;
-  struct vacunas* siguiente;
-}vacunas;
-
-
 
 TDAlista* crearListaVacia(){
   TDAlista* lista=(TDAlista*)malloc(sizeof(TDAlista));
@@ -128,7 +57,7 @@ void insertarNodoFinal(TDAlista* lista, char* valor){
   }
 
 }
-
+*/
 void lecturaVacunados1D(char* nombre,vacunados1dosis* vacunados){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -228,7 +157,11 @@ int main(){
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
   vacunas* vacunasE =(vacunas*)malloc(sizeof(vacunas)*3);
-  lecturaVacunas("vacunas.in",vacunados2D);
+  lecturaVacunas("vacunas.in",vacunasE);
+
+
+
+
 
   /*
   for(int i=0;i< 20;i++){
