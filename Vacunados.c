@@ -3,26 +3,24 @@
 #include "nodos.h"
 
 
-/*
-
-TDAlista* crearListaVacia(){
-  TDAlista* lista=(TDAlista*)malloc(sizeof(TDAlista));
-  lista->inicio=NULL;
+nodo1D* crearListaVacia(){
+  nodo1D* lista=(nodo1D*)malloc(sizeof(nodo1D));
+  lista=NULL;
   return lista;
 }
 
-int esListaVacia(TDAlista* lista){
-  if (lista->inicio == NULL)
+int esListaVacia(nodo1D* lista){
+  if (lista == NULL)
     return 1;
   else
     return 0;
 }
 
-void recorrerLista(TDAlista* lista){
+void recorrerLista(nodo1D* lista){
   if (!esListaVacia(lista)){
-    nodo* auxiliar=lista->inicio;
+    nodo1D* auxiliar=lista;
     while (auxiliar!=NULL){
-      printf("%s  ",auxiliar->dato);
+      printf("%s  ",auxiliar->vacunados1D);
       auxiliar=auxiliar->siguiente;
     }
     printf("\n");
@@ -31,20 +29,20 @@ void recorrerLista(TDAlista* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoInicio(TDAlista* lista, char* valor){
-  nodo* nuevo=(nodo*)malloc(sizeof(nodo));
-  nuevo->dato=valor;
-  nuevo->siguiente = lista->inicio;
-  lista->inicio=nuevo;
+void insertarNodoInicio(nodo1D* lista, vacunados1dosis valor){
+  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
+  nuevo->vacunados1D=valor;
+  nuevo->siguiente = lista;
+  lista=nuevo;
 }
 
-void insertarNodoFinal(TDAlista* lista, char* valor){
-  nodo* nuevo=(nodo*)malloc(sizeof(nodo));
-  nodo* final = lista->inicio;
-  nuevo->dato=valor;
+void insertarNodoFinal(nodo1D* lista, vacunados1dosis valor){
+  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
+  nodo1D* final = lista;
+  nuevo->vacunados1D=valor;
   nuevo->siguiente = NULL;
   if (esListaVacia(lista)){
-    lista->inicio = nuevo;
+    lista = nuevo;
     
   }
   else{
@@ -57,7 +55,7 @@ void insertarNodoFinal(TDAlista* lista, char* valor){
   }
 
 }
-*/
+
 void lecturaVacunados1D(char* nombre,vacunados1dosis* vacunados){
   FILE* arch;
   arch = fopen(nombre,"r");

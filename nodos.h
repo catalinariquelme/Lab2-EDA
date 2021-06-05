@@ -5,8 +5,6 @@ struct vacunados1dosis;
 struct vacunados2dosis;
 struct vacunas;
 
-
-
 typedef struct vacunados1dosis{
   char* rut;
   char* nombre;
