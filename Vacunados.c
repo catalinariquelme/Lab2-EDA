@@ -4,6 +4,24 @@
 #include "vacunados2D.h"
 #include "vacunas.h"
 
+//Entardas: char*nombre(nombre del archivo a leer)
+//Salida: int dimension(tamaño del archivo)
+//Objetivo: leer y almacenar la primera línea del archivo (dimension)
+int tamanoArchivo(char* nombre){    
+    FILE* arch;
+    arch = fopen(nombre,"r");
+    if(arch == NULL){
+        printf("No existe el archivo\n");
+        exit(1);
+    }
+    char* aux = (char*)malloc(100*sizeof(char));
+    fgets(aux,100,arch);
+    fclose(arch);
+    int dimension;
+    dimension = atoi(aux);
+    return dimension;
+}
+
 void lecturaVacunados1D(char* nombre,vacunados1dosis* vacunados){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -95,16 +113,17 @@ void lecturaVacunas(char* nombre,vacunas* vacunas){
 
 
 int main(){
-
+  int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
   vacunados1dosis* vacunados1D =(vacunados1dosis*)malloc(sizeof(vacunados1dosis)*23);
   lecturaVacunados1D("vacunados1D.in",vacunados1D);
 
+  int numeroVacunados2D = tamanoArchivo("vacunados2D.in");
   vacunados2dosis* vacunados2D =(vacunados2dosis*)malloc(sizeof(vacunados2dosis)*8);
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
+  int numeroVacunas = tamanoArchivo("vacunas.in");
   vacunas* vacunasE =(vacunas*)malloc(sizeof(vacunas)*3);
   lecturaVacunas("vacunas.in",vacunasE);
-
 
 
 
