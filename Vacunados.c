@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "vacunados1D.h"
 #include "vacunados2D.h"
 #include "vacunas.h"
@@ -111,19 +112,67 @@ void lecturaVacunas(char* nombre,vacunas* vacunas){
   fclose(arch);
 }
 
+int convertirFecha(){
+  char date[] = "05/04/21";
+  char delimitador[] = "/";
+  int fecha[3];
+  char *token = strtok(date, delimitador);
+  int i = 0;
+  if(token != NULL){
+      while(token != NULL){
+          int aux = atoi(token);
+          fecha[i] = aux;
+          token = strtok(NULL, delimitador);
+          i++;
+      }
+  }
+  for ( int i = 0; i < 3; i++){
+      printf("%d  ",fecha[i]);
+  }
+  return fecha;
+}
 
+//BubbleSort
+void bubbleSort(struct nodo1D *inicio)
+{
+    int swapped, i;
+    struct nodo1D *nodo1;
+    struct nodo1D *nodo2 = NULL;
+  
+    if (inicio == NULL)
+        return;
+  
+    do{
+        swapped = 0;
+        nodo1 = inicio;
+  
+        while (nodo1->siguiente != nodo2){
+            if (nodo1->vacunados1D.fecha1dosis > nodo1->siguiente->vacunados1D.fecha1dosis){ 
+                intercambio1D(nodo1, nodo1->siguiente);
+                swapped = 1;
+            }
+            nodo1 = nodo1->siguiente;
+        }
+        nodo2 = nodo1;
+    }
+    while (swapped);
+}
+  
 int main(){
   int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
-  vacunados1dosis* vacunados1D =(vacunados1dosis*)malloc(sizeof(vacunados1dosis)*23);
+  vacunados1dosis* vacunados1D =(vacunados1dosis*)malloc(sizeof(vacunados1dosis)*numeroVacunados1D);
   lecturaVacunados1D("vacunados1D.in",vacunados1D);
 
-  int numeroVacunados2D = tamanoArchivo("vacunados2D.in");
-  vacunados2dosis* vacunados2D =(vacunados2dosis*)malloc(sizeof(vacunados2dosis)*8);
+  int numeroVacunados1D = tamanoArchivo("vacunados2D.in");
+  vacunados2dosis* vacunados2D =(vacunados2dosis*)malloc(sizeof(vacunados2dosis)*numeroVacunados1D);
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
   int numeroVacunas = tamanoArchivo("vacunas.in");
-  vacunas* vacunasE =(vacunas*)malloc(sizeof(vacunas)*3);
+  vacunas* vacunasE =(vacunas*)malloc(sizeof(vacunas)*numeroVacunas);
   lecturaVacunas("vacunas.in",vacunasE);
+
+
+  //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
 
 
 

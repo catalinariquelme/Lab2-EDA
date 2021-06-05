@@ -23,14 +23,14 @@ nodo1D* crearListaVacia(){
   return lista;
 }
 
-int esListaVacia(nodo1D* lista){
+int esListaVacia1D(nodo1D* lista){
   if (lista == NULL)
     return 1;
   else
     return 0;
 }
 
-void recorrerLista(nodo1D* lista){
+void recorrerLista1D(nodo1D* lista){
   if (!esListaVacia(lista)){
     nodo1D* auxiliar=lista;
     while (auxiliar!=NULL){
@@ -43,14 +43,14 @@ void recorrerLista(nodo1D* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoInicio(nodo1D* lista, vacunados1dosis valor){
+void insertarNodoInicio1D(nodo1D* lista, vacunados1dosis valor){
   nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
   nuevo->vacunados1D=valor;
   nuevo->siguiente = lista;
   lista=nuevo;
 }
 
-void insertarNodoFinal(nodo1D* lista, vacunados1dosis valor){
+void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
   nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
   nodo1D* final = lista;
   nuevo->vacunados1D=valor;
@@ -66,4 +66,12 @@ void insertarNodoFinal(nodo1D* lista, vacunados1dosis valor){
     final->siguiente = nuevo;
   }
 
+}
+
+//Intercambia hacia donde apunta los punteros del nodo a y b
+void intercambio1D(struct nodo1D *a, struct nodo1D *b){
+    vacunados1dosis aux;
+    aux = a->vacunados1D;
+    a->vacunados1D = b->vacunados1D;
+    b->vacunados1D = aux;
 }
