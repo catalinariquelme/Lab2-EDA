@@ -17,7 +17,7 @@ typedef struct nodo1D{
   struct nodo1D * siguiente;
 }nodo1D;
 
-nodo1D* crearListaVacia(){
+nodo1D* crearListaVacia1D(){
   nodo1D* lista=(nodo1D*)malloc(sizeof(nodo1D));
   lista=NULL;
   return lista;
@@ -31,10 +31,15 @@ int esListaVacia1D(nodo1D* lista){
 }
 
 void recorrerLista1D(nodo1D* lista){
-  if (!esListaVacia(lista)){
+  if (!esListaVacia1D(lista)){
     nodo1D* auxiliar=lista;
     while (auxiliar!=NULL){
-      printf("%s  ",auxiliar->vacunados1D);
+      printf("Rut: %s \n",auxiliar->vacunados1D.rut);
+      printf("Nombre: %s \n",auxiliar->vacunados1D.nombre);
+      printf("Apellido: %s \n",auxiliar->vacunados1D.apellido);
+      printf("Edad: %s \n",auxiliar->vacunados1D.edad);
+      printf("Fecha 2 dosis: %s \n",auxiliar->vacunados1D.fecha1dosis);
+      printf("Id vacuna: %s \n\n",auxiliar->vacunados1D.idVacuna);
       auxiliar=auxiliar->siguiente;
     }
     printf("\n");
@@ -55,17 +60,15 @@ void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
   nodo1D* final = lista;
   nuevo->vacunados1D=valor;
   nuevo->siguiente = NULL;
-  if (esListaVacia(lista)){
+  if (esListaVacia1D(lista)){
     lista = nuevo;
-    
   }
   else{
     while(final->siguiente != NULL){
-        final = final->siguiente;
+      final = final->siguiente;
     }
     final->siguiente = nuevo;
   }
-
 }
 
 //Intercambia hacia donde apunta los punteros del nodo a y b
