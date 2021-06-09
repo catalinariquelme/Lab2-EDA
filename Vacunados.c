@@ -5,6 +5,12 @@
 #include "vacunados2D.h"
 #include "vacunas.h"
 
+typedef struct date{
+  int day;
+  int month;
+  int year;
+}date;
+
 //Entardas: char*nombre(nombre del archivo a leer)
 //Salida: int dimension(tamaño del archivo)
 //Objetivo: leer y almacenar la primera línea del archivo (dimension)
@@ -120,10 +126,15 @@ void lecturaVacunas(char* nombre,vacunas* vacunas){
 //2->año
 */
 int convertirFecha(char* date,int j){
-  //char date[] = "05/04/21";
-  char delimitador[] = "/";
+  //char date2[] = "05/04/21";
+  printf("Entre a fechas\n");
+  char delimitador[] = " / ";
   int fecha[3];
-  char *token = strtok(date, delimitador);
+  printf("4\n");
+  char* token = NULL;
+  printf("4.5");
+  token = strtok(date, delimitador);
+  printf("5\n");
   int i = 0;
   if(token != NULL){
       while(token != NULL){
@@ -133,29 +144,29 @@ int convertirFecha(char* date,int j){
           i++;
       }
   }
-  for ( int i = 0; i < 3; i++){
-      printf("%d  ",fecha[i]);
-  }
   return fecha[j];
 }
 
 //BubbleSort
-
+/*
 void ordenCronologico(struct nodo1D *inicio){
+    printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
   
     if (inicio == NULL)
       return;
-  
+
     do{
+      printf("Hola\n");
       swapped = 0;
       nodo1 = inicio;
       while (nodo1->siguiente != nodo2){
+        printf("2 while\n");
         int fecha1 = convertirFecha(nodo1->vacunados1D.fecha1dosis,1);
         int fecha2 = convertirFecha(nodo1->siguiente->vacunados1D.fecha1dosis,2);
-
+        printf("Pase fechas\n");
         if (fecha1 >fecha2){ 
             intercambio1D(nodo1, nodo1->siguiente);
             swapped = 1;
@@ -166,6 +177,57 @@ void ordenCronologico(struct nodo1D *inicio){
   }
   while (swapped);
 }
+*/
+void ordenAbecedarioNombre(struct nodo1D *inicio){
+    printf("Entre\n");
+    int swapped, i;
+    struct nodo1D *nodo1;
+    struct nodo1D *nodo2 = NULL;
+  
+    if (inicio == NULL)
+      return;
+
+    do{
+      swapped = 0;
+      nodo1 = inicio;
+      while (nodo1->siguiente != nodo2){
+        int ret = strcmp(nodo1->vacunados1D.nombre,nodo1->siguiente->vacunados1D.nombre);
+        if (ret>0){ 
+            intercambio1D(nodo1, nodo1->siguiente);
+            swapped = 1;
+        }
+        nodo1 = nodo1->siguiente;
+      }
+      nodo2 = nodo1;
+  }
+  while (swapped);
+}
+
+void ordenAbecedarioApellido(struct nodo1D *inicio){
+    printf("Entre\n");
+    int swapped, i;
+    struct nodo1D *nodo1;
+    struct nodo1D *nodo2 = NULL;
+  
+    if (inicio == NULL)
+      return;
+
+    do{
+      swapped = 0;
+      nodo1 = inicio;
+      while (nodo1->siguiente != nodo2){
+        int ret = strcmp(nodo1->vacunados1D.apellido,nodo1->siguiente->vacunados1D.apellido);
+        if (ret>0){ 
+            intercambio1D(nodo1, nodo1->siguiente);
+            swapped = 1;
+        }
+        nodo1 = nodo1->siguiente;
+      }
+      nodo2 = nodo1;
+  }
+  while (swapped);
+}
+
 
 int main(){
   int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
@@ -183,11 +245,13 @@ int main(){
   */
 
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
-  recorrerLista1D(vacunados1D);
-  ordenCronologico(vacunados1D);
-  printf("-------CRONOLOGICO--------\n");
-  recorrerLista1D(vacunados1D);
+  //recorrerLista1D(vacunados1D);
+  //ordenCronologico(vacunados1D);
 
+  recorrerLista1D(vacunados1D);
+  ordenAbecedarioNombre(vacunados1D);
+  printf("---------------Alba--------------\n");
+  recorrerLista1D(vacunados1D);
   return 0;
 }
 
