@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "vacunados1D.h"
 #include "vacunados2D.h"
 #include "vacunas.h"
+
+time_t mktime(struct tm *timeptr);
 
 typedef struct date{
   int day;
@@ -178,7 +181,7 @@ void ordenCronologico(struct nodo1D *inicio){
   while (swapped);
 }
 */
-void ordenAbecedarioNombre(struct nodo1D *inicio){
+void ordenAbecedarioNombre(nodo1D *inicio){
     printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
@@ -203,7 +206,7 @@ void ordenAbecedarioNombre(struct nodo1D *inicio){
   while (swapped);
 }
 
-void ordenAbecedarioApellido(struct nodo1D *inicio){
+void ordenAbecedarioApellido(nodo1D *inicio){
     printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
@@ -228,6 +231,33 @@ void ordenAbecedarioApellido(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entradas: date fecha(fecha inicial)
+Salida: date fecha(fecha tras determinado tiempo)
+Objetivo: calcular la fecha tras n semanas
+*/
+void proximaVacuna(date fecha,int semanas){
+   int ret;
+   struct tm info;
+   char buffer[80];
+
+   info.tm_year = fecha.year - 1900;
+   info.tm_mon = fecha.month ;
+   info.tm_mday = fecha.day + (semanas*7);
+   info.tm_hour = 0;
+   info.tm_min = 0;
+   info.tm_sec = 0;
+   info.tm_isdst = 0;
+
+   ret = mktime(&info);
+   if( ret == -1 ) {
+      printf("Error: mktime\n");
+   } else {
+      strftime(buffer, sizeof(buffer), "%c", &info );
+      printf(buffer);
+   }
+
+}
 
 int main(){
   int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
@@ -252,6 +282,17 @@ int main(){
   ordenAbecedarioNombre(vacunados1D);
   printf("---------------Alba--------------\n");
   recorrerLista1D(vacunados1D);
+  printf("--------------2 dosis-------------\n");
+  struct date fechaa;
+  fechaa.day = 8;
+  fechaa.month = 6;
+  fechaa.year = 2021;
+
+  int semanas = 10;
+  proximaVacuna(fechaa,semanas);
+
+
+  
   return 0;
 }
 
