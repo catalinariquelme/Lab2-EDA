@@ -96,7 +96,6 @@ void lecturaVacunados2D(char* nombre,nodo2D* lista){
   fclose(arch);
 }
 
-/*
 void lecturaVacunas(char* nombre,vacunas* vacunas){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -124,11 +123,7 @@ void lecturaVacunas(char* nombre,vacunas* vacunas){
   fclose(arch);
 }
 
-//0->día
-//1->mes
-//2->año
-*/
-int convertirFecha(char* date,int j){
+date convertirFecha(char* date){
   //char date2[] = "05/04/21";
   printf("Entre a fechas\n");
   char delimitador[] = " / ";
@@ -147,7 +142,7 @@ int convertirFecha(char* date,int j){
           i++;
       }
   }
-  return fecha[j];
+  return fecha;
 }
 
 //BubbleSort
@@ -236,7 +231,7 @@ Entradas: date fecha(fecha inicial)
 Salida: date fecha(fecha tras determinado tiempo)
 Objetivo: calcular la fecha tras n semanas
 */
-void proximaVacuna(date fecha,int semanas){
+int proximaVacuna(date fecha,int semanas){
    int ret;
    struct tm info;
    char buffer[80];
@@ -254,9 +249,34 @@ void proximaVacuna(date fecha,int semanas){
       printf("Error: mktime\n");
    } else {
       strftime(buffer, sizeof(buffer), "%c", &info );
-      printf(buffer);
+      return(buffer);
    }
 
+}
+
+void salidaListado(nodo1D * lista, nodoVacunas* vacunas){
+  FILE* arch;
+  arch = fopen("listado.out","w");
+  if (!esListaVacia1D(lista)){
+    nodo1D* auxiliar=lista;
+    while (auxiliar!=NULL){
+      fputs(auxiliar->vacunados1D.rut,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.nombre,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.apellido,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.edad,arch);
+      fputs(" ",arch);
+      int semanas = recorrerBuscarSemanas(vacunas,auxiliar->vacunados1D.idVacuna);
+      date fechaInicial = convertirFecha(auxiliar->vacunados1D.fecha1dosis);
+      fputs(proximaVacuna(fechaInicial,semanas),arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.idVacuna,arch);
+      fputs("\n",arch);
+      auxiliar=auxiliar->siguiente;
+    }
+  }
 }
 
 int main(){
@@ -282,14 +302,15 @@ int main(){
   ordenAbecedarioNombre(vacunados1D);
   printf("---------------Alba--------------\n");
   recorrerLista1D(vacunados1D);
-  printf("--------------2 dosis-------------\n");
+  salidaListado(vacunados1D);
+  printf("--------------Imprimi-------------\n");
   struct date fechaa;
   fechaa.day = 8;
   fechaa.month = 6;
   fechaa.year = 2021;
 
   int semanas = 10;
-  proximaVacuna(fechaa,semanas);
+  //proximaVacuna(fechaa,semanas);
 
 
   

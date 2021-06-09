@@ -48,13 +48,6 @@ void recorrerLista1D(nodo1D* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoInicio1D(nodo1D* lista, vacunados1dosis valor){
-  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
-  nuevo->vacunados1D=valor;
-  nuevo->siguiente = lista;
-  lista=nuevo;
-}
-
 void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
   nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
   nodo1D* final = lista;
