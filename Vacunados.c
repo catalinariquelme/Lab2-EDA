@@ -2,9 +2,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include "vacunados1D.h"
 #include "vacunados2D.h"
 #include "vacunas.h"
+
+typedef struct provisiones{
+  int enero;
+  int febrero;
+  int marzo;
+  int abril;
+  int mayo;
+  int junio;
+  int julio;
+  int agosto;
+  int septiembre;
+  int noviembre; 
+  int diciembre;
+  
+}provisiones;
+
 
 time_t mktime(struct tm *timeptr);
 
@@ -13,9 +30,6 @@ int* convertirFecha(char fecha[80]){
   int* fechaSalida = (int*)malloc(sizeof(int)*3);
   char* token;
   token = strtok(fecha, "/");
-  if (token == NULL){
-    printf("Eror fecha\n");
-  }
   int i = 0;
   fechaSalida[i] = atoi(token);
   i++;
@@ -38,15 +52,14 @@ Entradas: date fecha(fecha inicial)
 Salida: date fecha(fecha tras determinado tiempo)
 Objetivo: calcular la fecha tras n semanas
 */
-/*
-int proximaVacuna(int *fecha,int semanas){
+
+char* proximaVacuna(int *fecha,int semanas){
    int ret;
    struct tm info;
    char buffer[80];
-
-   info.tm_year =  - 1900;
-   info.tm_mon = 0;
-   info.tm_mday = 0 + (semanas*7);
+   info.tm_year = fecha[2]+2000 - 1900;
+   info.tm_mon = fecha[1];
+   info.tm_mday = fecha[0] + (semanas*7);
    info.tm_hour = 0;
    info.tm_min = 0;
    info.tm_sec = 0;
@@ -57,10 +70,11 @@ int proximaVacuna(int *fecha,int semanas){
       printf("Error: mktime\n");
    } else {
       strftime(buffer, sizeof(buffer), "%c", &info );
-      return(buffer);
+      printf(buffer);
    }
 }
-*/
+
+
 //Entardas: char*nombre(nombre del archivo a leer)
 //Salida: int dimension(tamaño del archivo)
 //Objetivo: leer y almacenar la primera línea del archivo (dimension)
@@ -145,8 +159,7 @@ void lecturaVacunados2D(char* nombre,nodo2D* lista){
   fclose(arch);
 }
 
-/*
-void lecturaVacunas(char* nombre,vacunas* vacunas){
+void lecturaVacunas(char* nombre,nodoVacunas* lista){
   FILE* arch;
   arch = fopen(nombre,"r");
   if(arch == NULL){
@@ -157,22 +170,22 @@ void lecturaVacunas(char* nombre,vacunas* vacunas){
   fscanf(arch,"%d",&cantidadVacunas);
   int i =0;
   while(feof(arch) == 0){
+    vacunas vacunasExistentes;
     char* aux = (char*)malloc(100*sizeof(char));
     char* aux2 = (char*)malloc(100*sizeof(char));
     char* aux3 = (char*)malloc(100*sizeof(char));
     char* aux4 = (char*)malloc(100*sizeof(char));
 
     fscanf(arch,"%s %s %s %s",aux,aux2,aux3,aux4);
-    vacunas[i].numero = aux;
-    vacunas[i].nombre = aux2;
-    vacunas[i].fabricante = aux3;
-    vacunas[i].periodo = aux4;
-    i++;
+    vacunasExistentes.numero = aux;
+    vacunasExistentes.nombre = aux2;
+    vacunasExistentes.fabricante = aux3;
+    vacunasExistentes.periodo = aux4;
+    insertarNodoFinalVacunas(lista,vacunasExistentes);
   }
 
   fclose(arch);
 }
-*/
 
 
 /*
@@ -211,9 +224,6 @@ void bubbleSort(struct nodo1D *start)
   
 
 */
-
-
-
 
 
 
@@ -267,9 +277,6 @@ void ordenAbecedarioApellido(struct nodo1D *inicio){
   while (swapped);
 }
 
-
-
-
 /*
 Entradas: nodo2D *inicio(cabeza lista vacunados con dos dosis), nodo1D *inicio(cabeza lista vacunados con una dosis)
 Salida: -
@@ -294,6 +301,7 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
         fputs(auxiliar->vacunados2D.idVacuna,arch);
         fputs("\n",arch);
 
+        //Se busca si la persona fue vacunada en el mismo recinto con la primera dosis
         nodo1D* inicio2=inicio1D;
         nodo2D* persona=auxiliar;
         if (!esListaVacia1D(inicio1D)){
@@ -319,35 +327,59 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
         }
         auxiliar=auxiliar->siguiente;
       }
-    fclose(arch);
     }
+  fclose(arch);
 }
 
+void salidaProcisiones(nodo1D *lista){
+  provisiones provisiones;
+  provisiones.enero = 0;
+  provisiones.febrero = 0;
+  provisiones.marzo = 0;
+  provisiones.abril = 0;
+  provisiones.mayo = 0;
+  provisiones.junio = 0;
+  provisiones.julio = 0;
+  provisiones.agosto = 0;
+  provisiones.septiembre = 0;
+  provisiones.noviembre = 0;
+  provisiones.diciembre = 0;
+
+  if (!esListaVacia1D(lista)){
+    nodo1D* auxiliar=lista;
+    while (auxiliar!=NULL){
+      int* fecha = (int*)malloc(sizeof(int)*3);
+      fecha = convertirFecha(auxiliar->vacunados1D.fecha1dosis);
+      proximaVacuna(fecha,10);
+      printf("%d\n",fecha[1]);
+      auxiliar=auxiliar->siguiente;
+    }
+    printf("\n");
+  }
 
 
+}
 
 
 int main(){
   int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
   nodo1D* vacunados1D=(nodo1D*)malloc(sizeof(nodo1D));
   lecturaVacunados1D("vacunados1D.in",vacunados1D);
-  printf("1d");
+
   int numeroVacunados2D = tamanoArchivo("vacunados2D.in");
   nodo2D* vacunados2D=(nodo2D*)malloc(sizeof(nodo2D));
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
-  printf("2d\n");
 
-  /*
   int numeroVacunas = tamanoArchivo("vacunas.in");
   nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
   lecturaVacunas("vacunas.in",vacunasE);
-  */
+
 
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
   recorrerLista1D(vacunados1D);
+  salidaProcisiones(vacunados1D);
   //bubbleSort(vacunados1D);
-  printf("--------------------------------------------------------------------------------------\n");
-  salidaVacunacionCompleta(vacunados2D,vacunados1D);
+  //salidaVacunacionCompleta(vacunados2D,vacunados1D);
   printf("escribi");
   //recorrerLista1D(vacunados1D);
   //ordenAbecedarioNombre(vacunados1D);
