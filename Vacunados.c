@@ -17,6 +17,7 @@ typedef struct provisiones{
   int julio;
   int agosto;
   int septiembre;
+  int octubre;
   int noviembre; 
   int diciembre;
   
@@ -40,11 +41,6 @@ int* convertirFecha(char fecha[80]){
       i++;
     }
   }
-  //printf("Fecha\n");
-  for(int i =0;i<3;i++){
-    //printf("%d/ ",fechaSalida[i]);
-  }
-  //printf("\n\n");
   return fechaSalida;
 }
 /*
@@ -53,7 +49,7 @@ Salida: date fecha(fecha tras determinado tiempo)
 Objetivo: calcular la fecha tras n semanas
 */
 
-char* proximaVacuna(int *fecha,int semanas){
+int* proximaVacuna(int *fecha,int semanas){
    int ret;
    struct tm info;
    char buffer[80];
@@ -66,14 +62,15 @@ char* proximaVacuna(int *fecha,int semanas){
    info.tm_isdst = 0;
 
    ret = mktime(&info);
+   int* fechaSalida = (int*)malloc(sizeof(int)*3);
    if( ret == -1 ) {
       printf("Error: mktime\n");
    } else {
       strftime(buffer, sizeof(buffer), "%c", &info );
-      printf(buffer);
+      fechaSalida = convertirFecha(buffer);
    }
+   return fechaSalida;
 }
-
 
 //Entardas: char*nombre(nombre del archivo a leer)
 //Salida: int dimension(tamaño del archivo)
@@ -187,7 +184,6 @@ void lecturaVacunas(char* nombre,nodoVacunas* lista){
   fclose(arch);
 }
 
-
 /*
 void bubbleSort(struct nodo1D *start)
 {
@@ -225,8 +221,6 @@ void bubbleSort(struct nodo1D *start)
 
 */
 
-
-
 void ordenAbecedarioNombre(struct nodo1D *inicio){
     printf("Entre\n");
     int swapped, i;
@@ -253,7 +247,6 @@ void ordenAbecedarioNombre(struct nodo1D *inicio){
 }
 
 void ordenAbecedarioApellido(struct nodo1D *inicio){
-    printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
@@ -331,7 +324,47 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
   fclose(arch);
 }
 
-void salidaProcisiones(nodo1D *lista){
+provisiones aumentoMes(int mes,provisiones meses){
+  if (mes==1){
+    meses.enero = meses.enero + 1;
+  }
+  else if(mes==2){
+    meses.febrero = meses.febrero + 1;
+  }
+  else if(mes==3){
+    meses.marzo = meses.marzo + 1;
+  }
+  else if(mes==4){
+    meses.abril = meses.abril + 1;
+  }
+  else if(mes==5){
+    meses.mayo = meses.mayo + 1;
+  }
+  else if(mes==6){
+    meses.junio = meses.junio + 1;
+  }
+  else if(mes==7){
+    meses.julio = meses.julio + 1;
+  }
+  else if(mes==8){
+    meses.agosto = meses.agosto + 1;
+  }
+  else if(mes==9){
+    meses.septiembre = meses.septiembre + 1;
+  }
+  else if(mes==10){
+    meses.octubre = meses.octubre + 1;
+  }
+  else if(mes==11){
+    meses.noviembre = meses.noviembre + 1;
+  }
+  else if(mes==12){
+    meses.diciembre = meses.diciembre +1;
+  }
+  return meses;
+}
+
+void salidaProvisiones(nodo1D *lista){
   provisiones provisiones;
   provisiones.enero = 0;
   provisiones.febrero = 0;
@@ -342,6 +375,7 @@ void salidaProcisiones(nodo1D *lista){
   provisiones.julio = 0;
   provisiones.agosto = 0;
   provisiones.septiembre = 0;
+  provisiones.octubre = 0;
   provisiones.noviembre = 0;
   provisiones.diciembre = 0;
 
@@ -350,8 +384,12 @@ void salidaProcisiones(nodo1D *lista){
     while (auxiliar!=NULL){
       int* fecha = (int*)malloc(sizeof(int)*3);
       fecha = convertirFecha(auxiliar->vacunados1D.fecha1dosis);
-      proximaVacuna(fecha,10);
-      printf("%d\n",fecha[1]);
+      int* fechaNueva = (int*)malloc(sizeof(int)*3);
+      fechaNueva = proximaVacuna(fecha,10);
+
+      printf("Mes: %d",fechaNueva[0]);
+      printf("\n");
+
       auxiliar=auxiliar->siguiente;
     }
     printf("\n");
@@ -374,17 +412,12 @@ int main(){
   nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
   lecturaVacunas("vacunas.in",vacunasE);
 
-
+  printf("\n-----------\n");
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
-  recorrerLista1D(vacunados1D);
-  salidaProcisiones(vacunados1D);
-  //bubbleSort(vacunados1D);
+  //recorrerLista1D(vacunados1D);
+  salidaProvisiones(vacunados1D);
   //salidaVacunacionCompleta(vacunados2D,vacunados1D);
   printf("escribi");
-  //recorrerLista1D(vacunados1D);
-  //ordenAbecedarioNombre(vacunados1D);
-  //printf("---------------Alba--------------\n");
-  //recorrerLista1D(vacunados1D);
   return 0;
 }
 

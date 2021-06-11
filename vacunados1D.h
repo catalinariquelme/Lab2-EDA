@@ -25,8 +25,10 @@ nodo1D* crearListaVacia1D(){
 }
 
 int esListaVacia1D(nodo1D* lista){
-  if (lista == NULL)
+  if (lista == NULL){
+    //printf("Vacia\n");
     return 1;
+  }
   else
     return 0;
 }
@@ -49,20 +51,23 @@ void recorrerLista1D(nodo1D* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
-  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
-  nodo1D* final = lista;
-  nuevo->vacunados1D=valor;
-  nuevo->siguiente = NULL;
-  if (esListaVacia1D(lista)){
-    lista = nuevo;
+
+nodo1D* insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
+  nodo1D* nuevoNodo,*aux;
+  nuevoNodo =(nodo1D*)malloc(sizeof(nodo1D));
+  nuevoNodo ->vacunados1D = valor;
+  nuevoNodo->siguiente = NULL;
+  if (lista == NULL){
+    lista = nuevoNodo;
   }
   else{
-    while(final->siguiente != NULL){
-      final = final->siguiente;
+    aux = lista;
+    while(aux->siguiente != NULL){
+      aux= aux->siguiente;
     }
-    final->siguiente = nuevo;
+    aux->siguiente = nuevoNodo;
   }
+  return(lista);
 }
 
 //Intercambia hacia donde apunta los punteros del nodo a y b
