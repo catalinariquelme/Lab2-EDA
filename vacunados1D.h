@@ -8,8 +8,9 @@ typedef struct vacunados1dosis{
   char* nombre;
   char* apellido;
   char* edad;
-  char* fecha1dosis;
+  char fecha1dosis[80];
   char* idVacuna;
+  
 }vacunados1dosis;
 
 typedef struct nodo1D{
@@ -38,7 +39,7 @@ void recorrerLista1D(nodo1D* lista){
       printf("Nombre: %s \n",auxiliar->vacunados1D.nombre);
       printf("Apellido: %s \n",auxiliar->vacunados1D.apellido);
       printf("Edad: %s \n",auxiliar->vacunados1D.edad);
-      printf("Fecha 2 dosis: %s \n",auxiliar->vacunados1D.fecha1dosis);
+      printf("Fecha 1 dosis: %s\n",auxiliar->vacunados1D.fecha1dosis);
       printf("Id vacuna: %s \n\n",auxiliar->vacunados1D.idVacuna);
       auxiliar=auxiliar->siguiente;
     }
@@ -46,6 +47,13 @@ void recorrerLista1D(nodo1D* lista){
   }
   else
     printf("La lista está vacia\n");
+}
+
+void insertarNodoInicio1D(nodo1D* lista, vacunados1dosis valor){
+  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
+  nuevo->vacunados1D=valor;
+  nuevo->siguiente = lista;
+  lista=nuevo;
 }
 
 void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
