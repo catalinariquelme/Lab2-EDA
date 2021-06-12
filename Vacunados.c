@@ -209,34 +209,34 @@ void ordenCronologicoMes(struct nodo1D *inicio){
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
   
-    if (inicio == NULL)
-      return;
-
     do{
       swapped = 0;
-      nodo1 = inicio;
+      nodo1 = inicio->siguiente;
       while (nodo1->siguiente != nodo2){
-
+        
         nodo1D *aux = nodo1;
         int* fecha = (int*)malloc(sizeof(int)*3);
-        fecha = convertirFecha(aux->vacunados1D.fecha1dosis);
+        char fechaChar[80];
+        strcpy(fechaChar,aux->vacunados1D.fecha1dosis);
+        fecha = convertirFecha(fechaChar);
 
         int* fecha2 = (int*)malloc(sizeof(int)*3);
-        fecha2 = convertirFecha(aux->siguiente->vacunados1D.nombre);
-        printf("%d\n",fecha[1]);
-
-        /*
-        if (fecha[0]<fecha2[0]){ 
-            intercambio1D(aux, aux->siguiente);
-            swapped = 1;
+        char fecha2Char[80];
+        strcpy(fecha2Char,aux->siguiente->vacunados1D.fecha1dosis);
+        fecha2 = convertirFecha(fecha2Char);
+        
+        if (fecha[1]>fecha2[1]){ 
+          intercambio1D(nodo1, nodo1->siguiente);
+          swapped = 1;
         }
-        */
+
         nodo1 = nodo1->siguiente;
       }
       nodo2 = nodo1;
   }
   while (swapped);
 }
+
 
 
 /*
@@ -441,7 +441,7 @@ int main(){
   recorrerLista1D(vacunados1D);
   //salidaProvisiones(vacunados1D);
   printf("------------------------\n");
-  ordenAbecedarioNombre(vacunados1D);
+  ordenCronologicoMes(vacunados1D);
   recorrerLista1D(vacunados1D);
 
   //salidaVacunacionCompleta(vacunados2D,vacunados1D);
