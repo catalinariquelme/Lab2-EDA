@@ -24,9 +24,13 @@ nodo1D* crearListaVacia1D(){
   return lista;
 }
 
+/*
+Entradas: lista(cabeza de la lista)
+Salida: 1|0 (Dependiendo si se encuentra vácia o no)
+Objetivo: determina si una lista se encuentra vácia
+*/
 int esListaVacia1D(nodo1D* lista){
   if (lista == NULL){
-    //printf("Vacia\n");
     return 1;
   }
   else
@@ -51,26 +55,32 @@ void recorrerLista1D(nodo1D* lista){
     printf("La lista está vacia\n");
 }
 
-
-nodo1D* insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
-  nodo1D* nuevoNodo,*aux;
-  nuevoNodo =(nodo1D*)malloc(sizeof(nodo1D));
-  nuevoNodo ->vacunados1D = valor;
-  nuevoNodo->siguiente = NULL;
-  if (lista == NULL){
-    lista = nuevoNodo;
+/*
+Entradas: lista(cabeza de la lista), valor (dato a agregar)
+Salida:-
+Objetivo: insertar un dato al final de la lista entregada
+*/
+void insertarNodoFinal1D(nodo1D* lista, vacunados1dosis valor){
+  nodo1D* nuevo=(nodo1D*)malloc(sizeof(nodo1D));
+  nodo1D* final = lista;
+  nuevo->vacunados1D=valor;
+  nuevo->siguiente = NULL;
+  if (esListaVacia1D(lista)){
+    lista = nuevo;
   }
   else{
-    aux = lista;
-    while(aux->siguiente != NULL){
-      aux= aux->siguiente;
+    while(final->siguiente != NULL){
+      final = final->siguiente;
     }
-    aux->siguiente = nuevoNodo;
+    final->siguiente = nuevo;
   }
-  return(lista);
 }
 
-//Intercambia hacia donde apunta los punteros del nodo a y b
+/*
+Entradas: a(puntero), b(puntero)
+Salida:-
+Objetivo: intercambia hacia donde apunta los punteros del nodo a y b
+*/
 void intercambio1D(struct nodo1D *a, struct nodo1D *b){
     vacunados1dosis aux;
     aux = a->vacunados1D;

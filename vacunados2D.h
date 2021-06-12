@@ -24,6 +24,11 @@ nodo2D* crearListaVacia2D(){
   return lista;
 }
 
+/*
+Entradas: lista(cabeza de la lista)
+Salida: 1|0 (Dependiendo si se encuentra vácia o no)
+Objetivo: determina si una lista se encuentra vácia
+*/
 int esListaVacia2D(nodo2D* lista){
   if (lista == NULL)
     return 1;
@@ -49,13 +54,11 @@ void recorrerLista2D(nodo2D* lista){
     printf("La lista está vacia\n");
 }
 
-void insertarNodoInicio2D(nodo2D* lista, vacunados2dosis valor){
-  nodo2D* nuevo=(nodo2D*)malloc(sizeof(nodo2D));
-  nuevo->vacunados2D=valor;
-  nuevo->siguiente = lista;
-  lista=nuevo;
-}
-
+/*
+Entradas: lista(cabeza de la lista), valor (dato a agregar)
+Salida:-
+Objetivo: insertar un dato al final de la lista entregada
+*/
 void insertarNodoFinal2D(nodo2D* lista, vacunados2dosis valor){
   nodo2D* nuevo=(nodo2D*)malloc(sizeof(nodo2D));
   nodo2D* final = lista;
@@ -72,10 +75,3 @@ void insertarNodoFinal2D(nodo2D* lista, vacunados2dosis valor){
   }
 }
 
-//Intercambia hacia donde apunta los punteros del nodo a y b
-void intercambio2D(struct nodo2D *a, struct nodo2D *b){
-    vacunados2dosis aux;
-    aux = a->vacunados2D;
-    a->vacunados2D = b->vacunados2D;
-    b->vacunados2D = aux;
-}

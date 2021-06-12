@@ -16,6 +16,11 @@ typedef struct nodoVacunas{
   struct nodoVacunas * siguiente;
 }nodoVacunas;
 
+/*
+Entradas: lista(cabeza de la lista)
+Salida: 1|0 (Dependiendo si se encuentra vácia o no)
+Objetivo: determina si una lista se encuentra vácia
+*/
 int esListaVaciaVcunas(nodoVacunas* lista){
   if (lista == NULL)
     return 1;
@@ -23,6 +28,11 @@ int esListaVaciaVcunas(nodoVacunas* lista){
     return 0;
 }
 
+/*
+Entradas: lista(cabeza de la lista), valor (dato a agregar)
+Salida:-
+Objetivo: insertar un dato al final de la lista entregada
+*/
 void insertarNodoFinalVacunas(nodoVacunas* lista, vacunas valor){
   nodoVacunas* nuevo=(nodoVacunas*)malloc(sizeof(nodoVacunas));
   nodoVacunas* final = lista;

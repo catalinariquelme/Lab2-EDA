@@ -26,8 +26,12 @@ typedef struct provisiones{
 
 time_t mktime(struct tm *timeptr);
 
+/*
+Entardas: fecha(fecha a modificar)
+Salida: fechaSalida(int*)
+Objetivo: convierte de char a int* una fecha
+*/
 int* convertirFecha(char fecha[80]){
-  //printf("Fecha %s\n",fecha);
   int* fechaSalida = (int*)malloc(sizeof(int)*3);
   char* token;
   token = strtok(fecha, "/");
@@ -43,12 +47,12 @@ int* convertirFecha(char fecha[80]){
   }
   return fechaSalida;
 }
+
 /*
 Entradas: date fecha(fecha inicial)
 Salida: date fecha(fecha tras determinado tiempo)
 Objetivo: calcular la fecha tras n semanas
 */
-
 int* proximaVacuna(int *fecha,int semanas){
    int ret;
    struct tm info;
@@ -72,9 +76,11 @@ int* proximaVacuna(int *fecha,int semanas){
    return fechaSalida;
 }
 
-//Entardas: char*nombre(nombre del archivo a leer)
-//Salida: int dimension(tamaño del archivo)
-//Objetivo: leer y almacenar la primera línea del archivo (dimension)
+/*
+Entardas: char*nombre(nombre del archivo a leer)
+Salida: int dimension(tamaño del archivo)
+Objetivo: leer y almacenar la primera línea del archivo (dimension)
+*/
 int tamanoArchivo(char* nombre){    
     FILE* arch;
     arch = fopen(nombre,"r");
@@ -90,6 +96,11 @@ int tamanoArchivo(char* nombre){
     return dimension;
 }
 
+/*
+Entardas: nombre(nombre del archivo a leer), lista(cabeza de la lista)
+Salida: -
+Objetivo: leer y almacenar en una lista enlazada
+*/
 void lecturaVacunados1D(char* nombre,nodo1D* lista){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -123,6 +134,11 @@ void lecturaVacunados1D(char* nombre,nodo1D* lista){
   fclose(arch);
 }
 
+/*
+Entardas: nombre(nombre del archivo a leer), lista(cabeza de la lista)
+Salida: -
+Objetivo: leer y almacenar en una lista enlazada
+*/
 void lecturaVacunados2D(char* nombre,nodo2D* lista){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -156,6 +172,11 @@ void lecturaVacunados2D(char* nombre,nodo2D* lista){
   fclose(arch);
 }
 
+/*
+Entardas: nombre(nombre del archivo a leer), lista(cabeza de la lista)
+Salida: -
+Objetivo: leer y almacenar en una lista enlazada
+*/
 void lecturaVacunas(char* nombre,nodoVacunas* lista){
   FILE* arch;
   arch = fopen(nombre,"r");
@@ -221,6 +242,11 @@ void bubbleSort(struct nodo1D *start)
 
 */
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+*/
 void ordenAbecedarioNombre(struct nodo1D *inicio){
     printf("Entre\n");
     int swapped, i;
@@ -246,6 +272,11 @@ void ordenAbecedarioNombre(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+*/
 void ordenAbecedarioApellido(struct nodo1D *inicio){
     int swapped, i;
     struct nodo1D *nodo1;
@@ -381,22 +412,20 @@ void salidaProvisiones(nodo1D *lista){
 
   if (!esListaVacia1D(lista)){
     nodo1D* auxiliar=lista;
+    //Se recorre la lista que neceseitarán una segunda dosis (vacunados con una dosis)
     while (auxiliar!=NULL){
       int* fecha = (int*)malloc(sizeof(int)*3);
       fecha = convertirFecha(auxiliar->vacunados1D.fecha1dosis);
       int* fechaNueva = (int*)malloc(sizeof(int)*3);
-      fechaNueva = proximaVacuna(fecha,10);
-
-      printf("Mes: %d",fechaNueva[0]);
-      printf("\n");
-
+      //Se calcula en que fecha debe ser administrada la segunda dosis 
+      //fechaNueva = proximaVacuna(fecha,10);
+      //provisiones = aumentoMes(fechaNueva[0],provisiones);
       auxiliar=auxiliar->siguiente;
     }
     printf("\n");
   }
-
-
 }
+
 
 
 int main(){
@@ -414,11 +443,9 @@ int main(){
 
   printf("\n-----------\n");
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
-  //recorrerLista1D(vacunados1D);
+  recorrerLista1D(vacunados1D);
   salidaProvisiones(vacunados1D);
   //salidaVacunacionCompleta(vacunados2D,vacunados1D);
   printf("escribi");
   return 0;
 }
-
-
