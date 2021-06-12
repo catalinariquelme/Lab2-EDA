@@ -203,6 +203,72 @@ void lecturaVacunas(char* nombre,nodoVacunas* lista){
   fclose(arch);
 }
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+*/
+void ordenAbecedarioNombre(struct nodo1D *inicio){
+    int swapped, i;
+    struct nodo1D *nodo1;
+    struct nodo1D *nodo2 = NULL;
+  
+    if (inicio == NULL)
+      return;
+
+    do{
+      swapped = 0;
+      nodo1 = inicio;
+      while (nodo1->siguiente != nodo2){
+        int ret = strcmp(nodo1->vacunados1D.nombre,nodo1->siguiente->vacunados1D.nombre);
+        if (ret>0){ 
+            intercambio1D(nodo1, nodo1->siguiente);
+            return;
+            swapped = 1;
+        }
+        else{
+          return;
+        }
+        nodo1 = nodo1->siguiente;
+      }
+      nodo2 = nodo1;
+  }
+  while (swapped);
+}
+
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+*/
+void ordenAbecedarioApellido(struct nodo1D *inicio){
+    int swapped, i;
+    struct nodo1D *nodo1;
+    struct nodo1D *nodo2 = NULL;
+  
+    do{
+      swapped = 0;
+      nodo1 = inicio;
+      while (nodo1->siguiente != nodo2){
+        int ret = strcmp(nodo1->vacunados1D.apellido,nodo1->siguiente->vacunados1D.apellido);
+        if (ret == 0){
+          ordenAbecedarioNombre(nodo1);
+        }
+        else if (ret > 0){ 
+          intercambio1D(nodo1, nodo1->siguiente);
+          return;
+          swapped = 1;
+        }
+        else{
+          return;
+        }
+        nodo1 = nodo1->siguiente;
+      }
+      nodo2 = nodo1;
+  }
+  while (swapped);
+}
+
 void ordenCronologicoYear(struct nodo1D *inicio){
     printf("Entre\n");
     int swapped, i;
@@ -294,7 +360,10 @@ void ordenCronologicoDia(struct nodo1D *inicio){
         fecha2 = convertirFecha(fecha2Char);
         if (fecha[2] == fecha2[2]){
           if (fecha[1] == fecha2[1]){
-            if (fecha[0]>fecha2[0]){ 
+            if (fecha[0]==fecha2[0]){
+              ordenAbecedarioApellido(nodo1);
+            }
+            else if (fecha[0]>fecha2[0]){ 
               intercambio1D(nodo1, nodo1->siguiente);
               swapped = 1;
             }
@@ -307,61 +376,29 @@ void ordenCronologicoDia(struct nodo1D *inicio){
   while (swapped);
 }
 
-/*
-Entardas: inicio(cabeza de la lista)
-Salida: -
-Objetivo: aplica bubblesort sobre una lista con el finde ordenar
-*/
-void ordenAbecedarioNombre(struct nodo1D *inicio){
-    int swapped, i;
-    struct nodo1D *nodo1;
-    struct nodo1D *nodo2 = NULL;
-  
-    if (inicio == NULL)
-      return;
-
-    do{
-      swapped = 0;
-      nodo1 = inicio;
-      while (nodo1->siguiente != nodo2){
-        int ret = strcmp(nodo1->vacunados1D.nombre,nodo1->siguiente->vacunados1D.nombre);
-        if (ret>0){ 
-            intercambio1D(nodo1, nodo1->siguiente);
-            swapped = 1;
-        }
-        nodo1 = nodo1->siguiente;
-      }
-      nodo2 = nodo1;
+void salidaListado(nodo1D *inicio){
+  FILE* arch;
+  arch = fopen("listado.out","w");
+  if (!esListaVacia1D(inicio)){
+    nodo1D* auxiliar=inicio->siguiente;
+    while (auxiliar!=NULL){
+      fputs(auxiliar->vacunados1D.rut,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.nombre,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.apellido,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.edad,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.fecha1dosis,arch);
+      fputs(" ",arch);
+      fputs(auxiliar->vacunados1D.idVacuna,arch);
+      fputs("\n",arch);
+      auxiliar=auxiliar->siguiente;
+    }
   }
-  while (swapped);
+  fclose(arch);
 }
-
-/*
-Entardas: inicio(cabeza de la lista)
-Salida: -
-Objetivo: aplica bubblesort sobre una lista con el finde ordenar
-*/
-void ordenAbecedarioApellido(struct nodo1D *inicio){
-    int swapped, i;
-    struct nodo1D *nodo1;
-    struct nodo1D *nodo2 = NULL;
-  
-    do{
-      swapped = 0;
-      nodo1 = inicio->siguiente;
-      while (nodo1->siguiente != nodo2){
-        int ret = strcmp(nodo1->vacunados1D.apellido,nodo1->siguiente->vacunados1D.apellido);
-        if (ret>0){ 
-            intercambio1D(nodo1, nodo1->siguiente);
-            swapped = 1;
-        }
-        nodo1 = nodo1->siguiente;
-      }
-      nodo2 = nodo1;
-  }
-  while (swapped);
-}
-
 /*
 Entradas: nodo2D *inicio(cabeza lista vacunados con dos dosis), nodo1D *inicio(cabeza lista vacunados con una dosis)
 Salida: -
@@ -371,7 +408,7 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
   FILE* arch;
   arch = fopen("vacunacionCompleta.out","w");
   if (!esListaVacia2D(inicio)){
-    nodo2D* auxiliar=inicio;
+    nodo2D* auxiliar=inicio->siguiente;
     while (auxiliar!=NULL){
       fputs(auxiliar->vacunados2D.rut,arch);
       fputs(" ",arch);
@@ -511,12 +548,11 @@ int main(){
   printf("------------------------\n");
   ordenCronologicoYear(vacunados1D);
   ordenCronologicoMes(vacunados1D);
-
-  recorrerLista1D(vacunados1D);
   ordenCronologicoDia(vacunados1D);
-  recorrerLista1D(vacunados1D);
 
-  //salidaVacunacionCompleta(vacunados2D,vacunados1D);
+  recorrerLista1D(vacunados1D);
+  salidaListado(vacunados1D);
+  salidaVacunacionCompleta(vacunados2D,vacunados1D);
   printf("escribi");
   finish = clock();
   //printf("process() took %f seconds to execute\n", ((double) (finish - start)) / CLOCKS_PER_SEC );
