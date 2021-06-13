@@ -206,7 +206,7 @@ void lecturaVacunas(char* nombre,nodoVacunas* lista){
 /*
 Entardas: inicio(cabeza de la lista)
 Salida: -
-Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+Objetivo: aplica bubblesort sobre una lista con el fin de ordenar de manera ascendente por nombre
 */
 void ordenAbecedarioNombre(struct nodo1D *inicio){
     int swapped, i;
@@ -239,7 +239,7 @@ void ordenAbecedarioNombre(struct nodo1D *inicio){
 /*
 Entardas: inicio(cabeza de la lista)
 Salida: -
-Objetivo: aplica bubblesort sobre una lista con el finde ordenar
+Objetivo: aplica bubblesort sobre una lista con el fin de ordenar de manera ascendente por apellido
 */
 void ordenAbecedarioApellido(struct nodo1D *inicio){
     int swapped, i;
@@ -269,6 +269,11 @@ void ordenAbecedarioApellido(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el fin de ordenar de manera ascendente por año
+*/
 void ordenCronologicoYear(struct nodo1D *inicio){
     int swapped, i;
     struct nodo1D *nodo1;
@@ -302,6 +307,11 @@ void ordenCronologicoYear(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el fin de ordenar de manera ascendente por mes
+*/
 void ordenCronologicoMes(struct nodo1D *inicio){
     int swapped, i;
     struct nodo1D *nodo1;
@@ -335,6 +345,11 @@ void ordenCronologicoMes(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entardas: inicio(cabeza de la lista)
+Salida: -
+Objetivo: aplica bubblesort sobre una lista con el fin de ordenar de manera ascendente por dia
+*/
 void ordenCronologicoDia(struct nodo1D *inicio){
     int swapped, i;
     struct nodo1D *nodo1;
@@ -373,6 +388,11 @@ void ordenCronologicoDia(struct nodo1D *inicio){
   while (swapped);
 }
 
+/*
+Entardas: inicio(cabeza de la lista),buffer(id vauncuna)
+Salida: int(semanas para poner segunda dosis)
+Objetivo: dada el id de la vacuna busca en la lista el periodo y lo retorna
+*/
 int peridoSegunVacuna(nodoVacunas *lista,char* buffer){
   if (!esListaVaciaVcunas(lista)){
     nodoVacunas* auxiliar=lista->siguiente;
@@ -385,6 +405,11 @@ int peridoSegunVacuna(nodoVacunas *lista,char* buffer){
   }
 }
 
+/*
+Entardas: inicio(cabeza de la lista),buffer(id vauncuna)
+Salida: int(semanas para poner segunda dosis)
+Objetivo: dada el id de la vacuna busca en la lista el nombre y lo retorna
+*/
 char* nombreSegunVacuna(nodoVacunas *lista,char* buffer){
   if (!esListaVaciaVcunas(lista)){
     nodoVacunas* auxiliar=lista->siguiente;
@@ -397,6 +422,11 @@ char* nombreSegunVacuna(nodoVacunas *lista,char* buffer){
   }
 }
 
+/*
+Entardas: inicio(cabeza de la lista),vacunasPorMes(estructura con el número de vacuanas por mes),inicioVacuna(cabeza lista vacunas)
+Salida: -
+Objetivo: escribe el el listado de personas con primera dosis
+*/
 void salidaListado(nodo1D *inicio,year vacunasPorMes,nodoVacunas *inicioVacunas){
   FILE* arch;
   arch = fopen("listado.out","w");
@@ -544,7 +574,7 @@ void salidaListado(nodo1D *inicio,year vacunasPorMes,nodoVacunas *inicioVacunas)
   fclose(arch);
 }
 /*
-Entradas: nodo2D *inicio(cabeza lista vacunados con dos dosis), nodo1D *inicio(cabeza lista vacunados con una dosis)
+Entradas: nodo2D *inicio(cabeza lista vacunados con dos dosis), nodo1D *inicio(cabeza lista vacunados con una dosis),*inicioVacunas(cabeza lista vacunados)
 Salida: -
 Objetivo: escribir .out que contenga las personas que tengan una vacunación completa
 */
@@ -602,6 +632,11 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D,nodoVacunas *inic
   fclose(arch);
 }
 
+/*
+Entardas: mes(numero mes), meses(estructura con los meses)
+Salida: estructura year
+Objetivo: dado un mes, aumenta en uno en la estructura dependiendo del mes
+*/
 year aumentoMes(int mes,year meses){
   if (mes==1){
     meses.enero = meses.enero + 1;
@@ -642,6 +677,11 @@ year aumentoMes(int mes,year meses){
   return meses;
 }
 
+/*
+Entardas: lista(cabeza lista), vacunasPorMes(eestructura con los vacunas por mes)
+Salida: estructura year
+Objetivo: dada una lista almacena las vacunas por mes en la estructura
+*/
 year vacunasMes(nodo1D *lista,year vacunasPorMes){
   if (!esListaVacia1D(lista)){
     nodo1D* auxiliar=lista;
@@ -659,6 +699,11 @@ year vacunasMes(nodo1D *lista,year vacunasPorMes){
   return vacunasPorMes;
 }
 
+/*
+Entardas: lista(cabeza lista una dosis), inicioVacunas(cabeza lista vacunas)
+Salida: estructura year
+Objetivo: dada una lista almacena las vacunas que se deberán admkinistrar por mes en la estructura
+*/
 year calculoProvision(nodo1D *lista,nodoVacunas *inicioVacunas){
   year provisiones;
   provisiones.enero = 0;
