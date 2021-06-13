@@ -690,7 +690,7 @@ year calculoProvision(nodo1D *lista,nodoVacunas *inicioVacunas){
       //Se calcula fecha segunda dosis
       fechaSalida = proximaVacuna(fecha1,periodo);
       //Se almacena en la estructura
-      provisiones= aumentoMes(fechaSalida[1],provisiones);
+      provisiones= aumentoMes(fechaSalida[0],provisiones);
       auxiliar=auxiliar->siguiente;
 
     }
@@ -824,7 +824,7 @@ int main(){
 
   vacunasPorMes = vacunasMes(vacunados1D,vacunasPorMes);
 
-
+  printf("\n\nESTADO ESCRITURA ARCHIVOS\n\n");
 
   salidaListado(vacunados1D,vacunasPorMes,vacunasE);
   printf("Lista.out escrito\n");
