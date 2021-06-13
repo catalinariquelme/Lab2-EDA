@@ -655,25 +655,137 @@ year vacunasMes(nodo1D *lista,year vacunasPorMes){
       vacunasPorMes = aumentoMes(fecha[1],vacunasPorMes);
       auxiliar=auxiliar->siguiente;
     }
-    printf("\n");
   }
   return vacunasPorMes;
 }
 
-void salidaProvision(nodo1D *inicio,nodoVacunas *inicioVacunas){
-  year vacunasPorMes;
-  vacunasPorMes.enero = 0;
-  vacunasPorMes.febrero = 0;
-  vacunasPorMes.marzo = 0;
-  vacunasPorMes.abril = 0;
-  vacunasPorMes.mayo = 0;
-  vacunasPorMes.junio = 0;
-  vacunasPorMes.julio = 0;
-  vacunasPorMes.agosto = 0;
-  vacunasPorMes.septiembre = 0;
-  vacunasPorMes.octubre = 0;
-  vacunasPorMes.noviembre = 0;
-  vacunasPorMes.diciembre = 0;
+year calculoProvision(nodo1D *lista,nodoVacunas *inicioVacunas){
+  year provisiones;
+  provisiones.enero = 0;
+  provisiones.febrero = 0;
+  provisiones.marzo = 0;
+  provisiones.abril = 0;
+  provisiones.mayo = 0;
+  provisiones.junio = 0;
+  provisiones.julio = 0;
+  provisiones.agosto = 0;
+  provisiones.septiembre = 0;
+  provisiones.octubre = 0;
+  provisiones.noviembre = 0;
+  provisiones.diciembre = 0;
+  //Se recorre la lista con una dosis calculando cuando será la proxima dosis y almacenandola en el mes
+  //que corresponde
+  if (!esListaVacia1D(lista)){
+    nodo1D* auxiliar=lista->siguiente;
+    //Se recorre la lista que neceseitarán una segunda dosis (vacunados con una dosis)
+    while (auxiliar!=NULL){
+      //Se calcula la próxima vacuna
+      int* fecha1 = (int*)malloc(sizeof(int)*3);
+      char fechaChar1[80];
+      strcpy(fechaChar1,auxiliar->vacunados1D.fecha1dosis);
+      fecha1 = convertirFecha(fechaChar1);
+      int* fechaSalida = (int*)malloc(sizeof(int)*3);
+      //Se busca el periodo en las lista que contiene todas las vacunas
+      int periodo = peridoSegunVacuna(inicioVacunas,auxiliar->vacunados1D.idVacuna);
+      //Se calcula fecha segunda dosis
+      fechaSalida = proximaVacuna(fecha1,periodo);
+      //Se almacena en la estructura
+      provisiones= aumentoMes(fechaSalida[1],provisiones);
+      auxiliar=auxiliar->siguiente;
+
+    }
+  }
+  return provisiones;
+}
+
+void salidaProvisiones( year provisiones){
+  FILE* arch;
+  arch = fopen("provisiones.out","w");
+  if(provisiones.enero !=0){
+    fputs("Enero: ",arch);
+    char buffer[20];
+    itoa(provisiones.enero,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }
+  if(provisiones.febrero !=0){
+    fputs("Febrero: ",arch);
+    char buffer[20];
+    itoa(provisiones.febrero,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }
+  if(provisiones.marzo !=0){
+    fputs("Marzo: ",arch);
+    char buffer[20];
+    itoa(provisiones.marzo,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.abril !=0){
+    fputs("Abril: ",arch);
+    char buffer[20];
+    itoa(provisiones.abril,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.mayo !=0){
+    fputs("Mayo: ",arch);
+    char buffer[20];
+    itoa(provisiones.mayo,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.junio !=0){
+    fputs("Junio: ",arch);
+    char buffer[20];
+    itoa(provisiones.junio,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.julio !=0){
+    fputs("Julio: ",arch);
+    char buffer[20];
+    itoa(provisiones.julio,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.agosto !=0){
+    fputs("Agosto: ",arch);
+    char buffer[20];
+    itoa(provisiones.agosto,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.septiembre !=0){
+    fputs("Septiembre: ",arch);
+    char buffer[20];
+    itoa(provisiones.septiembre,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.octubre !=0){
+    fputs("Octubre: ",arch);
+    char buffer[20];
+    itoa(provisiones.octubre,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.noviembre !=0){
+    fputs("Noviembre: ",arch);
+    char buffer[20];
+    itoa(provisiones.noviembre,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  if(provisiones.diciembre !=0){
+    fputs("Diciembre: ",arch);
+    char buffer[20];
+    itoa(provisiones.diciembre,buffer,10);
+    fputs(buffer,arch);
+    fputs("\n",arch);
+  }  
+  fclose(arch);
 }
 
 int main(){
@@ -691,9 +803,7 @@ int main(){
   nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
   lecturaVacunas("vacunas.in",vacunasE);
 
-
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
-  //salidaProvisiones(vacunados1D);
   ordenCronologicoYear(vacunados1D);
   ordenCronologicoMes(vacunados1D);
   ordenCronologicoDia(vacunados1D);
@@ -720,6 +830,9 @@ int main(){
   printf("Lista.out escrito\n");
   salidaVacunacionCompleta(vacunados2D,vacunados1D,vacunasE);
   printf("VacunacionCompleta.out escrito\n");
+  year provisiones = calculoProvision(vacunados1D,vacunasE);
+  salidaProvisiones(provisiones);
+  printf("Provision.out escrito\n");
   //finish = clock();
   //printf("process() took %f seconds to execute\n", ((double) (finish - start)) / CLOCKS_PER_SEC );
   return 0;
