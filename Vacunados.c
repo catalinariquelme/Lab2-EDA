@@ -57,7 +57,7 @@ int* proximaVacuna(int *fecha,int semanas){
    int ret;
    struct tm info;
    char buffer[80];
-   info.tm_year = fecha[2]+2000 - 1900;
+   info.tm_year = fecha[2]+ 2000 - 1900;
    info.tm_mon = fecha[1];
    info.tm_mday = fecha[0] + (semanas*7);
    info.tm_hour = 0;
@@ -270,7 +270,6 @@ void ordenAbecedarioApellido(struct nodo1D *inicio){
 }
 
 void ordenCronologicoYear(struct nodo1D *inicio){
-    printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
@@ -304,7 +303,6 @@ void ordenCronologicoYear(struct nodo1D *inicio){
 }
 
 void ordenCronologicoMes(struct nodo1D *inicio){
-    printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
@@ -338,7 +336,6 @@ void ordenCronologicoMes(struct nodo1D *inicio){
 }
 
 void ordenCronologicoDia(struct nodo1D *inicio){
-    printf("Entre\n");
     int swapped, i;
     struct nodo1D *nodo1;
     struct nodo1D *nodo2 = NULL;
@@ -376,7 +373,31 @@ void ordenCronologicoDia(struct nodo1D *inicio){
   while (swapped);
 }
 
-void salidaListado(nodo1D *inicio,year vacunasPorMes){
+int peridoSegunVacuna(nodoVacunas *lista,char* buffer){
+  if (!esListaVaciaVcunas(lista)){
+    nodoVacunas* auxiliar=lista->siguiente;
+    while (auxiliar!=NULL){
+      if (strcmp(buffer, auxiliar->vacunas.numero)==0){
+        return(atoi(auxiliar->vacunas.periodo));
+      }
+      auxiliar=auxiliar->siguiente;
+    }
+  }
+}
+
+char* nombreSegunVacuna(nodoVacunas *lista,char* buffer){
+  if (!esListaVaciaVcunas(lista)){
+    nodoVacunas* auxiliar=lista->siguiente;
+    while (auxiliar!=NULL){
+      if (strcmp(buffer, auxiliar->vacunas.numero)==0){
+        return(auxiliar->vacunas.nombre);
+      }
+      auxiliar=auxiliar->siguiente;
+    }
+  }
+}
+
+void salidaListado(nodo1D *inicio,year vacunasPorMes,nodoVacunas *inicioVacunas){
   FILE* arch;
   arch = fopen("listado.out","w");
   if (!esListaVacia1D(inicio)){
@@ -388,11 +409,10 @@ void salidaListado(nodo1D *inicio,year vacunasPorMes){
       int* fecha = (int*)malloc(sizeof(int)*3);
       char fechaChar[80];
       strcpy(fechaChar,auxiliar->vacunados1D.fecha1dosis);
-      
       fecha = convertirFecha(fechaChar);
       mes = fecha[1];
-      if (mes1 != mes){
-        mes1= mes;
+      if (mes != mes1){
+        mes1 = mes;
         if (mes == 1){
           fputs("Enero: ",arch);
           char buffer[20];
@@ -490,7 +510,34 @@ void salidaListado(nodo1D *inicio,year vacunasPorMes){
       fputs(" ",arch);
       fputs(auxiliar->vacunados1D.fecha1dosis,arch);
       fputs(" ",arch);
-      fputs(auxiliar->vacunados1D.idVacuna,arch);
+
+      //Se calcula la próxima vacuna
+      int* fecha1 = (int*)malloc(sizeof(int)*3);
+      char fechaChar1[80];
+      strcpy(fechaChar1,auxiliar->vacunados1D.fecha1dosis);
+      fecha1 = convertirFecha(fechaChar1);
+      int* fechaSalida = (int*)malloc(sizeof(int)*3);
+      //Se busca el periodo en las lista que contiene todas las vacunas
+      int periodo = peridoSegunVacuna(inicioVacunas,auxiliar->vacunados1D.idVacuna);
+      fechaSalida = proximaVacuna(fecha1,periodo);
+
+      //S escribe la fecha pbtenida en el archivo
+      char buffer[20];
+      itoa(fechaSalida[0],buffer,10);
+      fputs(buffer,arch);
+      fputs("/",arch);
+      itoa(fechaSalida[1],buffer,10);
+      fputs(buffer,arch);
+      fputs("/",arch);
+      itoa(fechaSalida[2],buffer,10);
+      fputs(buffer,arch);
+      fputs("/",arch);
+      fputs(" ",arch);
+
+      //Se busca nombre de las vacunas
+      char*nombre = nombreSegunVacuna(inicioVacunas,auxiliar->vacunados1D.idVacuna);
+
+      fputs(nombre,arch);
       fputs("\n",arch);
       auxiliar=auxiliar->siguiente;
     }
@@ -554,7 +601,6 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
 year aumentoMes(int mes,year meses){
   if (mes==1){
     meses.enero = meses.enero + 1;
-    printf("Entre a enero\n");
   }
   else if(mes==2){
     meses.febrero = meses.febrero + 1;
@@ -623,20 +669,16 @@ int main(){
   nodo2D* vacunados2D=(nodo2D*)malloc(sizeof(nodo2D));
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
-  //int numeroVacunas = tamanoArchivo("vacunas.in");
-  //nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
-  //lecturaVacunas("vacunas.in",vacunasE);
+  int numeroVacunas = tamanoArchivo("vacunas.in");
+  nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
+  lecturaVacunas("vacunas.in",vacunasE);
 
-  printf("\n-----------\n");
+
   //Se ordenan de manera cornologica la lista vacunados con una dosis (vacunados1D)
-  recorrerLista1D(vacunados1D);
   //salidaProvisiones(vacunados1D);
-  printf("------------------------\n");
   ordenCronologicoYear(vacunados1D);
   ordenCronologicoMes(vacunados1D);
   ordenCronologicoDia(vacunados1D);
-
-  recorrerLista1D(vacunados1D);
 
   year vacunasPorMes;
   vacunasPorMes.enero = 0;
@@ -653,14 +695,14 @@ int main(){
   vacunasPorMes.diciembre = 0;
 
   vacunasPorMes = vacunasMes(vacunados1D,vacunasPorMes);
-  printf("Enero: %d\n",vacunasPorMes.enero);
 
 
 
-  salidaListado(vacunados1D,vacunasPorMes);
+  salidaListado(vacunados1D,vacunasPorMes,vacunasE);
+  printf("Lista.out escrito\n");
   salidaVacunacionCompleta(vacunados2D,vacunados1D);
-  printf("escribi");
-  finish = clock();
+  printf("VacunacionCompleta.out escrito\n");
+  //finish = clock();
   //printf("process() took %f seconds to execute\n", ((double) (finish - start)) / CLOCKS_PER_SEC );
   return 0;
 }
