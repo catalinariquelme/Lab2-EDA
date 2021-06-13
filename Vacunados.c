@@ -536,7 +536,6 @@ void salidaListado(nodo1D *inicio,year vacunasPorMes,nodoVacunas *inicioVacunas)
 
       //Se busca nombre de las vacunas
       char*nombre = nombreSegunVacuna(inicioVacunas,auxiliar->vacunados1D.idVacuna);
-
       fputs(nombre,arch);
       fputs("\n",arch);
       auxiliar=auxiliar->siguiente;
@@ -549,7 +548,7 @@ Entradas: nodo2D *inicio(cabeza lista vacunados con dos dosis), nodo1D *inicio(c
 Salida: -
 Objetivo: escribir .out que contenga las personas que tengan una vacunación completa
 */
-void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
+void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D,nodoVacunas *inicioVacunas){
   FILE* arch;
   arch = fopen("vacunacionCompleta.out","w");
   if (!esListaVacia2D(inicio)){
@@ -565,10 +564,12 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
       fputs(" ",arch);
       fputs(auxiliar->vacunados2D.fecha2dosis,arch);
       fputs(" ",arch);
-      fputs(auxiliar->vacunados2D.idVacuna,arch);
+      //Se busca nombre de las vacunas
+      char*nombre = nombreSegunVacuna(inicioVacunas,auxiliar->vacunados2D.idVacuna);
+      fputs(nombre,arch);
       fputs("\n",arch);
 
-        //Se busca si la persona fue vacunada en el mismo recinto con la primera dosis
+      //Se busca si la persona fue vacunada en el mismo recinto con la primera dosis
       nodo1D* inicio2=inicio1D;
       nodo2D* persona=auxiliar;
       if (!esListaVacia1D(inicio1D)){
@@ -585,8 +586,11 @@ void salidaVacunacionCompleta(nodo2D *inicio, nodo1D *inicio1D){
             fputs(" ",arch);
             fputs(auxiliar2->vacunados1D.fecha1dosis,arch);
             fputs(" ",arch);
-            fputs(auxiliar2->vacunados1D.idVacuna,arch);
+            //Se busca nombre de las vacunas
+            char*nombre = nombreSegunVacuna(inicioVacunas,auxiliar2->vacunados1D.idVacuna);
+            fputs(nombre,arch);
             fputs("\n",arch);
+
             break;
           }
           auxiliar2=auxiliar2->siguiente;
@@ -656,7 +660,21 @@ year vacunasMes(nodo1D *lista,year vacunasPorMes){
   return vacunasPorMes;
 }
 
-
+void salidaProvision(nodo1D *inicio,nodoVacunas *inicioVacunas){
+  year vacunasPorMes;
+  vacunasPorMes.enero = 0;
+  vacunasPorMes.febrero = 0;
+  vacunasPorMes.marzo = 0;
+  vacunasPorMes.abril = 0;
+  vacunasPorMes.mayo = 0;
+  vacunasPorMes.junio = 0;
+  vacunasPorMes.julio = 0;
+  vacunasPorMes.agosto = 0;
+  vacunasPorMes.septiembre = 0;
+  vacunasPorMes.octubre = 0;
+  vacunasPorMes.noviembre = 0;
+  vacunasPorMes.diciembre = 0;
+}
 
 int main(){
   clock_t start, finish, duration;
@@ -700,7 +718,7 @@ int main(){
 
   salidaListado(vacunados1D,vacunasPorMes,vacunasE);
   printf("Lista.out escrito\n");
-  salidaVacunacionCompleta(vacunados2D,vacunados1D);
+  salidaVacunacionCompleta(vacunados2D,vacunados1D,vacunasE);
   printf("VacunacionCompleta.out escrito\n");
   //finish = clock();
   //printf("process() took %f seconds to execute\n", ((double) (finish - start)) / CLOCKS_PER_SEC );
