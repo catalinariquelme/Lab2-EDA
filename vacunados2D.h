@@ -36,24 +36,6 @@ int esListaVacia2D(nodo2D* lista){
     return 0;
 }
 
-void recorrerLista2D(nodo2D* lista){
-  if (!esListaVacia2D(lista)){
-    nodo2D* auxiliar=lista;
-    while (auxiliar!=NULL){
-      printf("Rut: %s \n",auxiliar->vacunados2D.rut);
-      printf("Nombre: %s \n",auxiliar->vacunados2D.nombre);
-      printf("Apellido: %s \n",auxiliar->vacunados2D.apellido);
-      printf("Edad: %s \n",auxiliar->vacunados2D.edad);
-      printf("Fecha 2 dosis: %s \n",auxiliar->vacunados2D.fecha2dosis);
-      printf("Id vacuna: %s \n\n",auxiliar->vacunados2D.idVacuna);
-      auxiliar=auxiliar->siguiente;
-    }
-    printf("\n");
-  }
-  else
-    printf("La lista está vacia\n");
-}
-
 /*
 Entradas: lista(cabeza de la lista), valor (dato a agregar)
 Salida:-

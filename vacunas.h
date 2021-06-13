@@ -28,22 +28,6 @@ int esListaVaciaVcunas(nodoVacunas* lista){
   else
     return 0;
 }
-
-void recorrerListaVacunas(nodoVacunas* lista){
-  if (!esListaVaciaVcunas(lista)){
-    nodoVacunas* auxiliar=lista;
-    while (auxiliar!=NULL){
-      printf("numero: %s \n",auxiliar->vacunas.numero);
-      printf("nombre: %s \n",auxiliar->vacunas.nombre);
-      printf("fabricante: %s \n",auxiliar->vacunas.fabricante);
-      printf("Periodo: %s \n\n",auxiliar->vacunas.periodo);
-      auxiliar=auxiliar->siguiente;
-    }
-    printf("\n");
-  }
-  else
-    printf("La lista está vacia\n");
-}
 /*
 Entradas: lista(cabeza de la lista), valor (dato a agregar)
 Salida:-

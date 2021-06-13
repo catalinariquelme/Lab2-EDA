@@ -34,6 +34,7 @@ Objetivo: convierte de char a int* una fecha
 int* convertirFecha(char fecha[80]){
   int* fechaSalida = (int*)malloc(sizeof(int)*3);
   char* token;
+  //Se separa a tráves de /
   token = strtok(fecha, "/");
   int i = 0;
   fechaSalida[i] = atoi(token);
@@ -54,6 +55,7 @@ Salida: date fecha(fecha tras determinado tiempo)
 Objetivo: calcular la fecha tras n semanas
 */
 int* proximaVacuna(int *fecha,int semanas){
+  //Se utiliza mktime de la libreria time para calcular proxima dosis
    int ret;
    struct tm info;
    char buffer[80];
@@ -74,26 +76,6 @@ int* proximaVacuna(int *fecha,int semanas){
       fechaSalida = convertirFecha(buffer);
    }
    return fechaSalida;
-}
-
-/*
-Entardas: char*nombre(nombre del archivo a leer)
-Salida: int dimension(tamaño del archivo)
-Objetivo: leer y almacenar la primera línea del archivo (dimension)
-*/
-int tamanoArchivo(char* nombre){    
-    FILE* arch;
-    arch = fopen(nombre,"r");
-    if(arch == NULL){
-        printf("No existe el archivo\n");
-        exit(1);
-    }
-    char* aux = (char*)malloc(100*sizeof(char));
-    fgets(aux,100,arch);
-    fclose(arch);
-    int dimension;
-    dimension = atoi(aux);
-    return dimension;
 }
 
 /*
@@ -836,15 +818,12 @@ void salidaProvisiones( year provisiones){
 int main(){
   clock_t start, finish, duration;
   start = clock();
-  int numeroVacunados1D = tamanoArchivo("vacunados1D.in");
   nodo1D* vacunados1D=(nodo1D*)malloc(sizeof(nodo1D));
   lecturaVacunados1D("vacunados1D.in",vacunados1D);
 
-  int numeroVacunados2D = tamanoArchivo("vacunados2D.in");
   nodo2D* vacunados2D=(nodo2D*)malloc(sizeof(nodo2D));
   lecturaVacunados2D("vacunados2D.in",vacunados2D);
 
-  int numeroVacunas = tamanoArchivo("vacunas.in");
   nodoVacunas* vacunasE=(nodoVacunas*)malloc(sizeof(nodoVacunas));
   lecturaVacunas("vacunas.in",vacunasE);
 
